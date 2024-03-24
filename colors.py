@@ -2,7 +2,8 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Colors:        
+class Colors:
+    """https://cs111.wellesley.edu/archive/cs111_fall14/public_html/labs/lab12/tkintercolor.html"""
     ALICE_BLUE = 'alice blue'
     ALICEBLUE = 'AliceBlue'
     ANTIQUE_WHITE = 'antique white'
