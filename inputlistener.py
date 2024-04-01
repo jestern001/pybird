@@ -1,5 +1,14 @@
 # key recorder
+from dataclasses import dataclass
 from tkinter import Event, Widget
+
+
+@dataclass
+class Keys:
+    LEFT = "Left"
+    RIGHT = "Right"
+    UP = "Up"
+    DOWN = "Down"
 
 
 class InputListener:
@@ -7,6 +16,9 @@ class InputListener:
         parent.bind("<KeyPress>", self.set_key)
         parent.bind("<KeyRelease>", self.unset_key)
         self.key_states = {}
+    
+    def key_pressed(self, key: Keys):
+        return self.key_states.get(key, None)
 
     def set_key(self, event: Event):
         self.key_states[event.keysym] = True
