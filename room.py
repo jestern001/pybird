@@ -43,17 +43,7 @@ class Room:
             )
 
     def update(self):
-        # move player
-        player = self.get_from_tag(Tags.PLAYER)
-        if player:
-            if self.inputs.key_pressed(Keys.LEFT):
-                self.move_obj(player, Point(-1*self.move_speed, 0))
-            if self.inputs.key_pressed(Keys.RIGHT):
-                self.move_obj(player, Point(self.move_speed, 0))
-            if self.inputs.key_pressed(Keys.UP):
-                self.move_obj(player, Point(0, -1*self.move_speed))
-            if self.inputs.key_pressed(Keys.DOWN):
-                self.move_obj(player, Point(0, self.move_speed))
+        self.move_player()
         self.canvas.update()
     
     def move_obj(self, obj: int, offset: Point):
@@ -64,3 +54,23 @@ class Room:
 
     def after(self, speed: float, method: Callable):
         self.canvas.after(speed, method)
+
+    def move_player(self):
+        # get player
+        player = self.get_from_tag(Tags.PLAYER)
+        if not player:
+            return
+
+        # get move direction
+        offset = Point(0, 0)
+        if self.inputs.key_pressed(Keys.LEFT):
+            offset += Point(-1, 0)
+        if self.inputs.key_pressed(Keys.RIGHT):
+            offset += Point(1, 0)
+        if self.inputs.key_pressed(Keys.UP):
+            offset += Point(0, -1)
+        if self.inputs.key_pressed(Keys.DOWN):
+            offset += Point(0, 1)
+        
+        # move player
+        self.move_obj(player, offset * self.move_speed)
