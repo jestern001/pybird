@@ -5,8 +5,12 @@ from typing import Callable
 
 from colors import Colors
 from inputlistener import InputListener, Keys
-from point import Point
+from point import Location, Point
 from tags import Tags
+
+
+class ObjectNotFound(Exception):
+    pass
 
 
 class Room:
@@ -49,18 +53,6 @@ class Room:
     def move_obj(self, obj: int, offset: Point):
         self.canvas.move(obj, offset.x, offset.y)
     
-    def get_location(self, obj: int) -> tuple[Point, Point]:
-        """Get top corner and size as points
-
-        Args:
-            obj (int): The object ID
-
-        Returns:
-            tuple[Point, Point]: The top left corner as a point and height and width as a point
-        """
-        x0, y0, x1, y1 = self.canvas.coords(obj)
-        return (Point(x0, y0), Point(x1-x0, y1-y0))
-
     def get_from_tag(self, tag: str) -> list[int]:
         return list(self.canvas.find_withtag(tag))
 
@@ -70,11 +62,18 @@ class Room:
     def get_room_size(self) -> Point:
         return Point(self.canvas.winfo_reqwidth(), self.canvas.winfo_reqwidth())
     
+    def get_location(self, obj: int) -> Location:
+        coords = self.canvas.coords(obj)
+        if not coords:
+            raise ObjectNotFound()
+        return Location(*coords)
+
     def move_player(self):
         # get player
-        player = self.get_from_tag(Tags.PLAYER)
-        if not player:
+        players = self.get_from_tag(Tags.PLAYER)
+        if not players:
             return
+        player = players[0]
 
         # get move direction
         offset = Point(0, 0)
@@ -88,15 +87,28 @@ class Room:
             offset += Point(0, 1)
         
         # check new location
-        room_size = self.get_room_size()
-        location, size = self.get_location(player)
-        new_location = location + offset
+        current_location = self.get_location(player)
+        new_location = current_location + offset
 
-        # stay in room
-        if not (0 < new_location.x < room_size.x - size.x):
-            offset.x = 0
-        if not (0 < new_location.y < room_size.y - size.y):
-            offset.y = 0
+        if self.outside_room(new_location):
+            print("Outisde Room")
+            return
+
+        if collisions:=self.get_collisions(player, new_location):
+            print("Collisions", collisions)
+            return
         
         # move player
         self.move_obj(player, offset * self.move_speed)
+    
+    def outside_room(self, location: Location) -> bool:
+        room_size = self.get_room_size()
+        return (
+            not (0 <= location.x <= room_size.x - location.size.x) 
+            or not (0 <= location.y <= room_size.y - location.size.y)
+        )
+
+    def get_collisions(self, obj: int, location: Location) -> list[int]:
+        all_collisions = self.canvas.find_overlapping(*location.as_coords())
+        # remove self and return
+        return list(c for c in all_collisions if c != obj)
