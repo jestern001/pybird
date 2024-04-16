@@ -1,4 +1,5 @@
 # key recorder
+from dataclasses import dataclass
 from tkinter import Event, Tk
 
 
