@@ -2,6 +2,14 @@
 from tkinter import Event, Tk
 
 
+@dataclass
+class Keys:
+    LEFT = "Left"
+    RIGHT = "Right"
+    UP = "Up"
+    DOWN = "Down"
+
+
 class InputListener:
     def __init__(self, parent: Tk) -> None:
         parent.bind("<KeyPress>", self.set_key)
