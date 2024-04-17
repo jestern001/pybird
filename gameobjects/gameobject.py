@@ -1,7 +1,6 @@
-from colors import Colors
-
-
 from dataclasses import dataclass, field
+
+from colors import Colors
 
 
 @dataclass
@@ -16,5 +15,5 @@ class GameObject:
     fill: str = Colors.WHITE
     move_speed: float = 0
 
-    def update(self):
+    def update(self, **kwargs):
         pass

@@ -1,4 +1,4 @@
-from gameobject import GameObject
+from gameobjects.gameobject import GameObject
 from old.inputlistener import Keys
 
 

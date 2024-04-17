@@ -1,17 +1,19 @@
-from gameobject import GameObject
-from player import Player
+from tkinter import Canvas
+
+from configloader import RoomConfig
+from gameobjects.gameobject import GameObject
 from colors import Colors
-
-
-from tkinter import Canvas, Tk
-
 from inputlistener import InputListener
+from gameobjects.player import Player
 
 
 class Room:
-    def __init__(self, canvas: Canvas, input_listener: InputListener) -> None:
+    def __init__(self, canvas: Canvas, input_listener: InputListener, room_config: RoomConfig) -> None:
         self.canvas = canvas
         self.input_listener = input_listener
+
+        # set window title
+        self.canvas.winfo_toplevel().title()
 
         # create game objects
         game_objects = [
@@ -41,24 +43,11 @@ class Room:
 
     def update(self):
         # update all room objects
-        for room_id, game_object in self.game_objects.items():
+        for room_id, obj in self.game_objects.items():
 
-            # update location
-            coords = self.canvas.coords(room_id)
-            game_object.x = coords[0]
-            game_object.y = coords[1]
-            game_object.w = coords[2]-coords[0]
-            game_object.h = coords[3]-coords[1]
+            # move player
+            inputs = self.input_listener.key_pressed
+            obj.update(inputs=inputs)
 
-            # handle player movement
-            if isinstance(game_object, Player):
-                # move player
-                inputs = self.input_listener.key_pressed
-                game_object.update(inputs)
-
-                # move
-                self.canvas.move(
-                    room_id,
-                    game_object.x - game_object.x_previous,
-                    game_object.y - game_object.y_previous
-                )
+            # move
+            self.canvas.move(room_id, obj.x - obj.x_previous, obj.y - obj.y_previous)
