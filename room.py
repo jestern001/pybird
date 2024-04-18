@@ -1,36 +1,27 @@
 from tkinter import Canvas
 
-from configloader import RoomConfig
+from gamesettings import GameObjectFactory, RoomConfig
 from gameobjects.gameobject import GameObject
-from colors import Colors
 from inputlistener import InputListener
-from gameobjects.player import Player
 
 
 class Room:
-    def __init__(self, canvas: Canvas, input_listener: InputListener, room_config: RoomConfig) -> None:
+    def __init__(
+        self,
+        canvas: Canvas,
+        input_listener: InputListener,
+        room_settings: RoomConfig
+    ) -> None:
         self.canvas = canvas
         self.input_listener = input_listener
 
         # set window title
         self.canvas.winfo_toplevel().title()
 
-        # create game objects
-        game_objects = [
-            Player(
-                x=50,
-                y=50,
-                h=15,
-                w=15,
-                fill=Colors.ORANGE,
-                tags=["player"],
-                move_speed=3
-            )
-        ]
-
-        # draw game objects
+        # build game objects form config
         self.game_objects: dict[int, GameObject] = {}
-        for game_object in game_objects:
+        for game_object_data in room_settings.game_objects:
+            game_object = GameObjectFactory.get(game_object_data)
             room_id = self.canvas.create_rectangle(
                 game_object.x,
                 game_object.y,

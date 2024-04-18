@@ -1,6 +1,6 @@
 from pathlib import Path
 from colors import Colors
-from configloader import ConfigLoader
+from gamesettings import GameSettings
 from inputlistener import InputListener
 from room import Room
 
@@ -14,10 +14,10 @@ class App:
         config_dir: Path
     ) -> None:
         # get config
-        self.config = ConfigLoader(config_dir)
+        self.game_settings = GameSettings(config_dir)
 
         # set game settings from config
-        self.update_rate = self.config.game_config.update_rate
+        self.update_rate = self.game_settings.game_config.update_rate
 
         # set tk
         self.tk = Tk()
@@ -26,10 +26,11 @@ class App:
 
         # set up game
         self.input_listener = InputListener(self.tk)
+        start_room_name = self.game_settings.game_config.start_room_name
         self.room = Room(
             canvas=self.canvas,
             input_listener=self.input_listener,
-            room_config=self.config.get_room_by_name(self.config.game_config.start_room_name)
+            room_settings=self.game_settings.get_room_settings(room_name=start_room_name)
         )
 
         # set up game loop

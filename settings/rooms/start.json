@@ -1,0 +1,15 @@
+{
+    "name": "start",
+    "game_objects": [
+        {
+            "object_class": "player",
+            "x": 50,
+            "y": 50,
+            "h": 15,
+            "w": 15,
+            "fill": "orange",
+            "tags": ["player"],
+            "move_speed": 5
+        }
+    ]
+}
