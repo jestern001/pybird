@@ -4,6 +4,10 @@ from old.inputlistener import Keys
 
 class Player(GameObject):
     def update(self, inputs: dict[str, bool]):
+        # call generic object logic
+        super().update()
+
+        # get input values
         left = inputs.get(Keys.LEFT)
         right = inputs.get(Keys.RIGHT)
         up = inputs.get(Keys.UP)
@@ -23,9 +27,5 @@ class Player(GameObject):
         y_offset = dir_y * move_speed
 
         # apply offsets
-        self.x_previous = self.x
-        self.y_previous = self.y
         self.x += x_offset
         self.y += y_offset
-
-        super().update()

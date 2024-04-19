@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from colors import Colors
 
@@ -11,9 +11,12 @@ class GameObject:
     h: float=10
     x_previous: float=x
     y_previous: float=y
-    tags: list[str] = field(default_factory=list)
     fill: str = Colors.WHITE
     move_speed: float = 0
+    solid: bool = False
 
     def update(self, **kwargs):
-        pass
+        """Sets x_previous and y_previous to the current x and y, respectivly
+        """
+        self.x_previous = self.x
+        self.y_previous = self.y

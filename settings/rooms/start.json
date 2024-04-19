@@ -8,8 +8,15 @@
             "h": 15,
             "w": 15,
             "fill": "orange",
-            "tags": ["player"],
             "move_speed": 5
+        },{
+            "object_class": "object",
+            "x": 75,
+            "y": 50,
+            "h": 15,
+            "w": 15,
+            "fill": "grey",
+            "solid": true
         }
     ]
 }

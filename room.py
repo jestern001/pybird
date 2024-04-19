@@ -27,8 +27,7 @@ class Room:
                 game_object.y,
                 game_object.x+game_object.w,
                 game_object.y+game_object.h,
-                fill=game_object.fill,
-                tags=game_object.tags
+                fill=game_object.fill
             )
             self.game_objects[room_id] = game_object
 
