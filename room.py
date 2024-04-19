@@ -32,12 +32,13 @@ class Room:
             self.game_objects[room_id] = game_object
 
     def update(self):
+
         # update all room objects
         for room_id, obj in self.game_objects.items():
 
             # move player
             inputs = self.input_listener.key_pressed
-            obj.update(inputs=inputs)
+            obj.update(inputs=inputs, game_objects=self.game_objects.values())
 
             # move
             self.canvas.move(room_id, obj.x - obj.x_previous, obj.y - obj.y_previous)
