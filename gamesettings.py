@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 from gameobjects.gameobject import GameObject
 from gameobjects.player import Player
@@ -24,8 +24,7 @@ class GameObjectFactory:
     def get(data: dict[str, Any]) -> GameObject | Player:
         mapping = {
             "player": Player,
-            "game_object": GameObject,
-            None: GameObject
+            "object": GameObject
         }
         # extract the class name
         class_key: str = data.pop("object_class")
