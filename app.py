@@ -1,5 +1,5 @@
 from pathlib import Path
-from colors import Colors
+from resources.colors import Colors
 from gamesettings import GameSettings
 from inputlistener import InputListener
 from room import Room

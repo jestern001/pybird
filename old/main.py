@@ -4,7 +4,7 @@ from tkinter import Canvas, Tk, Widget
 
 from inputlistener import InputListener
 from tags import Tags
-from colors import Colors
+from resources.colors import Colors
 
 
 GRID_SIZE = 32
