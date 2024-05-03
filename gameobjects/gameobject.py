@@ -7,26 +7,45 @@ from resources.colors import Colors
 
 @dataclass
 class GameObject:
+    """An in game object
+
+    Args:
+        x (float): The x location
+        y (float): The y location
+        w (float): The width of the object.  This is used for shapes.  For images, it's overwritten by image widht.
+        h (float): The height of the object.  This is used for shapes.  For images, it's overwritten by image height.
+        fill (str): The color of the object.  This is used for shapes.  For images, this is not used.
+        solid (bool): A flag noting that the object should collide with other solid objects.
+        image_location (str | None): The path to the image to be used for a sprite.  If not provided, will render as a shape (a rectangle by default).        
+    """
     # arguments set from settings file
     x: float=0
     y: float=0
     w: float=10
     h: float=10
-    x_previous: float=x
-    y_previous: float=y
     fill: str = Colors.WHITE
     move_speed: float = 0
     solid: bool = False
     image_location: str | None = None
 
-    # initialized but not set form settings file
-    sprite: PhotoImage | None = None
+    # init variables that are later set by post init
+    x_previous: float = x
+    y_previous: float = y
     image_path: Path | None = None
+    sprite: PhotoImage | None = None
 
     def __post_init__(self) -> None:
-        # convert image path string into a path object
+
+        # init previous locations
+        self.x_previous: float = self.x
+        self.y_previous: float = self.y
+
+        # if an image path was provided, create a sprite
         if self.image_location:
             self.image_path = Path(self.image_location)
+            self.sprite = PhotoImage(file=self.image_path)
+            self.w = self.sprite.width()
+            self.h = self.sprite.height()
 
     def overlap(self, a0, a1, b0, b1):
         if a0 == a1 or b0 == b1:

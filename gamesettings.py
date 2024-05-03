@@ -34,14 +34,7 @@ class GameObjectFactory:
         object_class = mapping[class_key]
 
         # initialize the class with the kwargs
-        game_object: GameObject | Player = object_class(**data)
-
-
-        # add sprite
-        if game_object.image_path:
-            game_object.sprite = PhotoImage(file=game_object.image_path)
-        
-        return game_object
+        return object_class(**data)
 
 
 class GameSettings:

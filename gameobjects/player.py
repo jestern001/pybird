@@ -1,3 +1,4 @@
+import logging
 from math import copysign
 from pathlib import Path
 from gameobjects.gameobject import GameObject
@@ -36,24 +37,30 @@ class Player(GameObject):
         x_new = self.x + x_offset
         y_new = self.y + y_offset
 
-        # handle collisions
-        collisions = self.get_collisions(x_new, y_new, x_new + self.w, y_new + self.h, game_objects)
-        for collision in collisions:
+        # handle x collisions
+        collisions = self.get_collisions(x_new, self.y, x_new + self.w, self.y + self.h, game_objects)
+        if collisions:
+            sorted_collisions = sorted(collisions, key = lambda c: abs(c.x - self.x))
+            closest_collision = sorted_collisions[0]
+            if closest_collision.x < self.x:
+                x_new = closest_collision.x + closest_collision.w + 1
+            elif self.x < closest_collision.x:
+                x_new = closest_collision.x - self.w -1
+            else:
+                x_new += 1
 
-            # move close to and around collision
-            if self.x < collision.x:
-                self.x = collision.x-self.w
-                x_offset = 0
-            elif collision.x < self.x:
-                self.x = collision.x + collision.w
-                x_offset = 0
-            elif self.y < collision.y:
-                self.y = collision.y-self.h
-                y_offset = 0
-            elif collision.y < self.y:
-                self.y = collision.y + collision.h
-                y_offset = 0
+        # handle y collisions
+        collisions = self.get_collisions(self.x, y_new, self.x + self.w, y_new + self.h, game_objects)
+        if collisions:
+            sorted_collisions = sorted(collisions, key = lambda c: abs(c.y - self.y))
+            closest_collision = sorted_collisions[0]
+            if closest_collision.y < self.y:
+                y_new = closest_collision.y + closest_collision.w + 1
+            elif self.y < closest_collision.y:
+                y_new = closest_collision.y - self.w - 1
+            else:
+                y_new += 1
 
         # apply offsets
-        self.x += x_offset
-        self.y += y_offset
+        self.x = x_new
+        self.y = y_new

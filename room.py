@@ -28,7 +28,8 @@ class Room:
                 room_id = self.canvas.create_image(
                     game_object.x,
                     game_object.y,
-                    image=game_object.sprite
+                    image=game_object.sprite,
+                    anchor="nw"
                 )
 
             # if there's no image, draw a rectangle
