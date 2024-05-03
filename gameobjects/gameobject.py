@@ -1,10 +1,13 @@
 from dataclasses import dataclass
+from pathlib import Path
+from tkinter import PhotoImage
 
 from resources.colors import Colors
 
 
 @dataclass
 class GameObject:
+    # arguments set from settings file
     x: float=0
     y: float=0
     w: float=10
@@ -14,6 +17,16 @@ class GameObject:
     fill: str = Colors.WHITE
     move_speed: float = 0
     solid: bool = False
+    image_location: str | None = None
+
+    # initialized but not set form settings file
+    sprite: PhotoImage | None = None
+    image_path: Path | None = None
+
+    def __post_init__(self) -> None:
+        # convert image path string into a path object
+        if self.image_location:
+            self.image_path = Path(self.image_location)
 
     def overlap(self, a0, a1, b0, b1):
         if a0 == a1 or b0 == b1:

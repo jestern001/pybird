@@ -1,10 +1,15 @@
 from math import copysign
+from pathlib import Path
 from gameobjects.gameobject import GameObject
 from old.inputlistener import Keys
 
 
 class Player(GameObject):
-    def update(self, inputs: dict[str, bool], game_objects: list['GameObject'] = []):
+    def update(
+        self,
+        inputs: dict[str, bool],
+        game_objects: list['GameObject'] = []
+    ):
         # call generic object logic
         super().update()
 

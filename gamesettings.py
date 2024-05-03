@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
+from tkinter import PhotoImage
 from typing import Any
 
 from gameobjects.gameobject import GameObject
@@ -33,7 +34,14 @@ class GameObjectFactory:
         object_class = mapping[class_key]
 
         # initialize the class with the kwargs
-        return object_class(**data)
+        game_object: GameObject | Player = object_class(**data)
+
+
+        # add sprite
+        if game_object.image_path:
+            game_object.sprite = PhotoImage(file=game_object.image_path)
+        
+        return game_object
 
 
 class GameSettings:

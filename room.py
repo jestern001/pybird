@@ -1,4 +1,5 @@
-from tkinter import Canvas
+from pathlib import Path, PosixPath
+from tkinter import Canvas, PhotoImage
 
 from gamesettings import GameObjectFactory, RoomConfig
 from gameobjects.gameobject import GameObject
@@ -22,14 +23,29 @@ class Room:
         self.game_objects: dict[int, GameObject] = {}
         for game_object_data in room_settings.game_objects:
             game_object = GameObjectFactory.get(game_object_data)
-            room_id = self.canvas.create_rectangle(
-                game_object.x,
-                game_object.y,
-                game_object.x+game_object.w,
-                game_object.y+game_object.h,
-                fill=game_object.fill
-            )
+
+            # if there's an image, draw it
+            if game_object.image_path is not None:
+                room_id = self.canvas.create_image(
+                    game_object.x,
+                    game_object.y,
+                    image=game_object.sprite
+                )
+
+            # if there's no image, draw a rectangle
+            else:
+                room_id = self.canvas.create_rectangle(
+                    game_object.x,
+                    game_object.y,
+                    game_object.x+game_object.w,
+                    game_object.y+game_object.h,
+                    fill=game_object.fill
+                )
+
             self.game_objects[room_id] = game_object
+
+        # self.photo_image = PhotoImage(file="Sprites/CharacterPlaceholder.gif")
+        # self.canvas.create_image(100, 100, image=self.photo_image)
 
     def update(self):
 
