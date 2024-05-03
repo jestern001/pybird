@@ -1,5 +1,4 @@
-from pathlib import Path, PosixPath
-from tkinter import Canvas, PhotoImage
+from tkinter import Canvas
 
 from gamesettings import GameObjectFactory, RoomConfig
 from gameobjects.gameobject import GameObject
