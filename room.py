@@ -43,9 +43,6 @@ class Room:
 
             self.game_objects[room_id] = game_object
 
-        # self.photo_image = PhotoImage(file="Sprites/CharacterPlaceholder.gif")
-        # self.canvas.create_image(100, 100, image=self.photo_image)
-
     def update(self):
 
         # update all room objects
